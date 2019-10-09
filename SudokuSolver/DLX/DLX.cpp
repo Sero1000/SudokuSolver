@@ -234,7 +234,7 @@ void DLX::unCover(Header* c) {
 	c->left_->right_ = c;
 }
 
-void DLX::search(int k,std::vector<Node*>& solutions) {
+void DLX::search(int k,std::vector<Node*> solutions) {
 	//cout << "search(" << k << ")" << std::endl;
 	if (m_root->right_ == m_root) {
 		m_solutions = solutions;

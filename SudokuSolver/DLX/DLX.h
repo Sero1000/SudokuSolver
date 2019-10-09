@@ -43,7 +43,7 @@ private:
 	void writeInFile();
 	int getBoxNumber(int row, int column) const;
 	
-	void search(int k, std::vector<Node*>& solution = std::vector<Node*>());
+	void search(int k, std::vector<Node*> solution = std::vector<Node*>());
 
 	void cover(Header*);
 	void unCover(Header*);
