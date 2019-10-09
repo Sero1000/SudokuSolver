@@ -3,6 +3,4 @@ The Sudoku is solved by viewing it as a exact cover problem(https://en.wikipedia
 One of the fastest algorithms of solving the exact cover problem is Knuth's Algorithm X(https://en.wikipedia.org/wiki/Knuth%27s_Algorithm_X)
 The DLX data structure files are in DLX folder(duh).
 
-To build the program just run 
-  qmake SudokuSolver.pro
-   make -f Makefile
+To build the program just run qmake SudokuSolver.pro then make -f Makefile
