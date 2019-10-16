@@ -4,6 +4,7 @@
 
 #include <QPushButton>
 #include <QVBoxLayout>
+#include <QMessageBox>
 
 SudokuSolver::SudokuSolver(QWidget *parent)
 	: QWidget(parent), m_sudokuWidget(new SudokuWidget(this))
@@ -41,10 +42,24 @@ void SudokuSolver::onSolve() {
 	DLX dlx(inputLine);
 
 	std::vector<std::vector<short>> solution = dlx.Solutions();
-
-	m_sudokuWidget->SetNumbers(solution);
+	
+	if (solutionFound(solution)) {
+		m_sudokuWidget->SetNumbers(solution);
+	}
+	else {
+		QMessageBox::information(this, "No Solution", "There is no solution for this sudoku");
+		m_sudokuWidget->ClearInputs();
+	}
 }
 
 void SudokuSolver::onClear() {
 	m_sudokuWidget->ClearInputs();
+}
+
+bool SudokuSolver::solutionFound(const std::vector<std::vector<short>>& solution) const {
+	if (solution[0][0] == 0 && solution[0][1] == 0 && solution[0][2] == 0) {
+		return false;
+	}
+
+	return true;
 }

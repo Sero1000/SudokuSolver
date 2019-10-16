@@ -14,6 +14,8 @@ public:
 private slots:
 	void onSolve();
 	void onClear();
+
+	bool solutionFound(const std::vector<std::vector<short>>&) const;
 private:
 	SudokuWidget* m_sudokuWidget;
 };

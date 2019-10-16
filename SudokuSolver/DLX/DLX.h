@@ -27,23 +27,18 @@ class DLX {
 public:
 	DLX(const std::string&);
 	DLX(const std::vector<std::vector<bool>>&, const std::vector<std::string>&);
-
-	void print() const;
+	~DLX();
 
 	std::vector<std::vector<short>> Solutions();
-
-
 private:
 	void createHeaders(const std::vector<std::string>&);
 	void createNodes(const std::vector<std::vector<bool>>&);
 	Header* chooseColumn();
 
-	void printOutput(const std::vector<Node*>& outputs);
 	void addRow(int number, int i);
-	void writeInFile();
 	int getBoxNumber(int row, int column) const;
 	
-	void search(int k, std::vector<Node*> solution = std::vector<Node*>());
+	void search(int k, std::vector<Node*>& solution);
 
 	void cover(Header*);
 	void unCover(Header*);

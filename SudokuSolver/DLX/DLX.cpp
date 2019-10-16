@@ -32,20 +32,25 @@ DLX::DLX(const std::string& line) : m_root(new Header("Root")), m_columns(324) {
 				addRow(j, i);
 			}
 		}
-		writeInFile();
 	}
 }
 
-void DLX::writeInFile() {
-	std::ofstream file("DLX_Headers.txt");
-
-	for (Header* currentHeader = m_root->right_->column_; currentHeader != m_root; currentHeader = currentHeader->right_->column_) {
-		file << currentHeader->name_ << "/" << currentHeader->size_ << " ";
+DLX::~DLX() {
+	for (size_t i = 0; i < m_headers.size(); ++i) {
+		Header* header = m_headers[i];
+		for (Node* node = header->up_; node != header; node = header->up_) {
+			header->up_ = node->up_;
+			delete node;
+		}
+		delete header;
 	}
+
+	delete m_root;
 }
 
 std::vector<std::vector<short>> DLX::Solutions() {
-	search(0);
+	std::vector<Node*> temp;
+	search(0,temp);
 
 	std::vector<std::vector<short>> result(9,std::vector<short>(9));
 
@@ -196,16 +201,6 @@ void DLX::createNodes(const std::vector<std::vector<bool>>& matrix) {
 	}
 }
 
-void DLX::print() const {
-	Header* current = m_root->right_->column_;
-	while (current != m_root) {
-		cout << current->name_ << "/" << current->size_ << " ";
-		current = current->right_->column_;
-	}
-	cout << std::endl;
-
-}
-
 void DLX::cover(Header* c) {
 	c->left_->right_ = c->right_;
 	c->right_->left_ = c->left_;
@@ -234,8 +229,7 @@ void DLX::unCover(Header* c) {
 	c->left_->right_ = c;
 }
 
-void DLX::search(int k,std::vector<Node*> solutions) {
-	//cout << "search(" << k << ")" << std::endl;
+void DLX::search(int k,std::vector<Node*>& solutions) {
 	if (m_root->right_ == m_root) {
 		m_solutions = solutions;
 		return;
@@ -261,26 +255,6 @@ void DLX::search(int k,std::vector<Node*> solutions) {
 
 	unCover(c);
 	return;
-}
-
-void DLX::printOutput(const std::vector<Node*>& O) {
-
-	std::vector < std::vector<int>> sudoku(9, std::vector<int>(9));
-
-	for (int i = 0; i < O.size(); ++i) {
-		Node* r = O[i];
-		size_t row = r->row_ / 81;
-		size_t column = (r->row_ % 81) / 9;
-		size_t number = (r->row_ % 81) % 9 + 1;
-		sudoku[row][column] = number;
-	}
-
-	for (int row = 0; row < sudoku.size(); ++row) {
-		for (int column = 0; column < sudoku[row].size(); ++column) {
-			cout << sudoku[row][column] << "  ";
-		}
-		cout << "\n\n";
-	}
 }
 
 Header* DLX::chooseColumn() {
