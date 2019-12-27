@@ -39,7 +39,8 @@ SudokuWidget::SudokuWidget(QWidget* parent)
 void SudokuWidget::SetNumbers(const std::vector<std::vector<short>>& solution) {
 	for (int row = 0; row < solution.size(); ++row) {
 		for (int column = 0; column < solution[row].size(); ++column) {
-			m_lineEdits[row][column]->setText(QString::number(solution[row][column]));
+			if(solution[row][column] != 0)
+				m_lineEdits[row][column]->setText(QString::number(solution[row][column]));
 		}
 	}
 }

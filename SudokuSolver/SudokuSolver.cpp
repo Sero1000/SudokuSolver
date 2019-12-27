@@ -5,15 +5,22 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QMessageBox>
+#include <QMenuBar>
+#include <QFileDialog>
+#include <QTextStream>
 
-SudokuSolver::SudokuSolver(QWidget *parent)
+SudokuSolver::SudokuSolver(QWidget* parent)
 	: QWidget(parent), m_sudokuWidget(new SudokuWidget(this))
 {
 	QPushButton* solveButton = new QPushButton("Solve");
 	QPushButton* clearButton = new QPushButton("Clear");
-	
+	QPushButton* openPushButton = new QPushButton("Open");
+
+	QMenuBar* menuBar = new QMenuBar();
+
 	connect(solveButton, &QPushButton::pressed, this, &SudokuSolver::onSolve);
 	connect(clearButton, &QPushButton::pressed, this, &SudokuSolver::onClear);
+	connect(openPushButton, &QPushButton::pressed, this, &SudokuSolver::onOpen);
 
 	setFixedWidth(480);
 	QVBoxLayout* vBoxLayout = new QVBoxLayout();
@@ -21,6 +28,7 @@ SudokuSolver::SudokuSolver(QWidget *parent)
 	vBoxLayout->addWidget(m_sudokuWidget);
 	vBoxLayout->addWidget(solveButton);
 	vBoxLayout->addWidget(clearButton);
+	vBoxLayout->addWidget(openPushButton);
 }
 
 void SudokuSolver::onSolve() {
@@ -62,4 +70,26 @@ bool SudokuSolver::solutionFound(const std::vector<std::vector<short>>& solution
 	}
 
 	return true;
+}
+
+void SudokuSolver::onOpen() {
+	std::vector<std::vector<short>> input(9,std::vector<short>(9));
+
+	QString fileDir = QFileDialog::getOpenFileName(this,QString("Open File"));
+	if (!fileDir.isNull()) {
+		QFile file(fileDir);
+		file.open(QIODevice::ReadOnly);
+
+		QTextStream stream(&file);
+
+		for (int i = 0; i < input.size(); ++i) {
+			for (int j = 0; j < input[i].size(); ++j) {
+				QChar value;
+				stream >> value;
+				input[i][j] = QString(value).toShort();
+			}
+		}
+	}
+
+	m_sudokuWidget->SetNumbers(input);
 }

@@ -1,13 +1,8 @@
 #include "DLX.h"
 
-#include <iostream>
-#include <limits>
 #include <fstream>
 #include <assert.h>
-#include <algorithm>
 #include <vector>
-
-using std::cout;
 
 DLX::DLX(const std::vector<std::vector<bool>>& matrix, const std::vector<std::string>& headerNames) :m_root(new Header("Root")), m_rows(matrix.size()), m_columns(matrix[0].size()) {
 	createHeaders(headerNames);

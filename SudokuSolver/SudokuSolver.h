@@ -14,6 +14,7 @@ public:
 private slots:
 	void onSolve();
 	void onClear();
+	void onOpen();
 
 	bool solutionFound(const std::vector<std::vector<short>>&) const;
 private:
